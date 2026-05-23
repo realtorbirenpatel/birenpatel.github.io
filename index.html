@@ -1,0 +1,376 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realtor Biren Patel | Your Trusted Real Estate Professional</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        if (typeof emailjs !== 'undefined') { emailjs.init('YOUR_PUBLIC_KEY'); }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --navy: #1B2A4A; --navy-light: #2C3E5A; --navy-dark: #0F1A2E;
+            --gold: #C9A96E; --gold-light: #D4B87A; --white: #FFFFFF;
+            --gray-light: #F5F7FA; --gray: #6B7B8D; --text: #2D3748;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; color: var(--text); line-height: 1.7; }
+        .fade-section { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .fade-section.visible { opacity: 1; transform: translateY(0); }
+        .navbar { position: fixed; top: 0; width: 100%; z-index: 1000; background: rgba(27,42,74,0.97); backdrop-filter: blur(10px); padding: 12px 0; transition: all 0.3s; }
+        .navbar.scrolled { padding: 8px 0; box-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 30px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { display: flex; align-items: center; text-decoration: none; }
+        .nav-logo img { height: 55px; width: auto; }
+        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .nav-links a { color: var(--white); text-decoration: none; font-size: 0.9em; font-weight: 500; transition: color 0.3s; position: relative; }
+        .nav-links a:hover { color: var(--gold); }
+        .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: var(--gold); transition: width 0.3s; }
+        .nav-links a:hover::after { width: 100%; }
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
+        .hamburger span { width: 25px; height: 2px; background: var(--white); transition: 0.3s; }
+        .hero { min-height: 100vh; background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 50%, var(--navy-light) 100%); display: flex; align-items: center; justify-content: center; text-align: center; padding: 120px 30px 80px; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: -50%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(201,169,110,0.1) 0%, transparent 70%); border-radius: 50%; }
+        .hero-content { position: relative; z-index: 1; max-width: 800px; }
+        .hero-logo { height: 160px; width: auto; margin-bottom: 30px; }
+        .hero-content h1 { font-size: 3.5em; color: var(--white); margin-bottom: 15px; font-weight: 800; letter-spacing: -1px; }
+        .hero-content h1 span { color: var(--gold); }
+        .hero-content p { font-size: 1.2em; color: rgba(255,255,255,0.8); margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .hero-btns { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        .btn { padding: 15px 35px; border-radius: 50px; font-size: 0.95em; font-weight: 600; text-decoration: none; transition: all 0.3s; display: inline-block; }
+        .btn-primary { background: var(--gold); color: var(--navy-dark); }
+        .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(201,169,110,0.3); }
+        .btn-outline { border: 2px solid var(--white); color: var(--white); }
+        .btn-outline:hover { background: var(--white); color: var(--navy); transform: translateY(-2px); }
+        section { padding: 100px 30px; }
+        .section-title { text-align: center; margin-bottom: 60px; }
+        .section-title h2 { font-size: 2.5em; color: var(--navy); margin-bottom: 15px; }
+        .section-title .divider { width: 60px; height: 3px; background: var(--gold); margin: 0 auto 15px; }
+        .section-title p { color: var(--gray); font-size: 1.1em; max-width: 600px; margin: 0 auto; }
+        .about { background: var(--gray-light); }
+        .about-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.3fr; gap: 60px; align-items: center; }
+        .about-image { width: 100%; height: 450px; border-radius: 15px; overflow: hidden; }
+        .about-image img { width: 100%; height: 100%; object-fit: cover; border-radius: 15px; }
+        .about-text h3 { font-size: 1.8em; color: var(--navy); margin-bottom: 20px; }
+        .about-text p { color: var(--gray); margin-bottom: 20px; font-size: 1.05em; }
+        .services-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .service-card { background: var(--white); padding: 40px 30px; border-radius: 15px; text-align: center; transition: all 0.3s; border: 1px solid #E8ECF0; }
+        .service-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(27,42,74,0.1); border-color: var(--gold); }
+        .service-icon { font-size: 3em; margin-bottom: 20px; }
+        .service-card h3 { font-size: 1.3em; color: var(--navy); margin-bottom: 12px; }
+        .service-card p { color: var(--gray); font-size: 0.95em; }
+        .testimonials { background: var(--navy); }
+        .testimonials .section-title h2 { color: var(--white); }
+        .testimonials .section-title p { color: rgba(255,255,255,0.6); }
+        .testimonials-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
+        .testimonial-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 35px; border-radius: 15px; transition: all 0.3s; }
+        .testimonial-card:hover { background: rgba(255,255,255,0.08); border-color: var(--gold); }
+        .testimonial-stars { color: var(--gold); font-size: 1.1em; margin-bottom: 15px; }
+        .testimonial-text { color: rgba(255,255,255,0.85); font-style: italic; margin-bottom: 20px; font-size: 0.95em; line-height: 1.8; }
+        .testimonial-author { color: var(--gold); font-weight: 600; font-size: 0.9em; }
+        .listing-detail { background: var(--gray-light); }
+        .listing-header { max-width: 1100px; margin: 0 auto 40px; }
+        .listing-header h3 { font-size: 2em; color: var(--navy); margin-bottom: 10px; }
+        .listing-price { font-size: 1.8em; color: var(--gold); font-weight: 800; margin-bottom: 10px; }
+        .listing-meta { display: flex; gap: 20px; flex-wrap: wrap; color: var(--gray); font-size: 0.95em; }
+        .listing-meta span { display: flex; align-items: center; gap: 5px; }
+        .listing-badge { display: inline-block; background: #28a745; color: white; padding: 4px 14px; border-radius: 20px; font-size: 0.8em; font-weight: 600; margin-left: 15px; }
+        .gallery-container { max-width: 1100px; margin: 0 auto; }
+        .gallery-main { width: 100%; height: 500px; border-radius: 15px; overflow: hidden; margin-bottom: 15px; position: relative; background: #000; }
+        .gallery-main img { width: 100%; height: 100%; object-fit: contain; transition: opacity 0.3s; }
+        .gallery-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(27,42,74,0.8); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.5em; display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
+        .gallery-nav:hover { background: var(--gold); }
+        .gallery-nav.prev { left: 15px; }
+        .gallery-nav.next { right: 15px; }
+        .gallery-counter { position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.7); color: white; padding: 5px 12px; border-radius: 20px; font-size: 0.8em; }
+        .gallery-thumbs { display: flex; gap: 8px; overflow-x: auto; padding: 5px 0; }
+        .gallery-thumbs img { width: 80px; height: 60px; object-fit: cover; border-radius: 8px; cursor: pointer; opacity: 0.6; transition: all 0.3s; border: 2px solid transparent; }
+        .gallery-thumbs img:hover, .gallery-thumbs img.active { opacity: 1; border-color: var(--gold); }
+        .listing-video { max-width: 1100px; margin: 40px auto 0; }
+        .listing-video h4 { color: var(--navy); margin-bottom: 15px; font-size: 1.3em; }
+        .listing-video iframe { width: 100%; border-radius: 15px; }
+        .contact-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+        .contact-info h3 { font-size: 1.5em; color: var(--navy); margin-bottom: 20px; }
+        .contact-item { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .contact-item .icon { width: 50px; height: 50px; background: var(--navy); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2em; flex-shrink: 0; }
+        .contact-item .text { color: var(--gray); }
+        .contact-item .text strong { color: var(--navy); display: block; margin-bottom: 3px; }
+        .contact-form input, .contact-form textarea { width: 100%; padding: 15px 20px; border: 2px solid #E8ECF0; border-radius: 10px; font-size: 0.95em; margin-bottom: 15px; font-family: inherit; transition: border-color 0.3s; }
+        .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--gold); }
+        .contact-form textarea { height: 140px; resize: vertical; }
+        .contact-form .btn { width: 100%; text-align: center; border: none; cursor: pointer; font-size: 1em; }
+        .form-success { display: none; background: #d4edda; color: #155724; padding: 15px 20px; border-radius: 10px; margin-top: 15px; text-align: center; font-weight: 500; }
+        .form-success.show { display: block; }
+        .footer { background: var(--navy-dark); padding: 40px 30px; text-align: center; color: rgba(255,255,255,0.5); font-size: 0.85em; }
+        .footer a { color: var(--gold); text-decoration: none; }
+        .footer-logo { height: 80px; margin-bottom: 15px; }
+        .social-links { margin-bottom: 20px; display: flex; justify-content: center; gap: 15px; }
+        .social-links a { width: 45px; height: 45px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: var(--white); text-decoration: none; transition: all 0.3s; font-size: 1.2em; }
+        .social-links a:hover { background: var(--gold); border-color: var(--gold); color: var(--navy-dark); }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .nav-links.active { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background: var(--navy-dark); padding: 20px 30px; gap: 15px; }
+            .hero-content h1 { font-size: 2.3em; }
+            .hero-logo { height: 120px; }
+            .about-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .gallery-main { height: 300px; }
+            .listing-meta { flex-direction: column; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo"><img src="logo_new.png" alt="Realtor Biren Patel"></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#listings">Listings</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <img src="logo_new.png" alt="Realtor Biren Patel" class="hero-logo">
+            <h1>Your Dream Home<br>Starts <span>Here</span></h1>
+            <p>Dedicated real estate professional helping you buy, sell, and invest with confidence in the local market.</p>
+            <div class="hero-btns">
+                <a href="#contact" class="btn btn-primary">Get In Touch</a>
+                <a href="#listings" class="btn btn-outline">View Listings</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="about fade-section" id="about">
+        <div class="section-title"><div class="divider"></div><h2>About Me</h2><p>Your trusted partner in real estate</p></div>
+        <div class="about-grid">
+            <div class="about-image"><img src="biren-headshot-compressed.jpeg" alt="Biren Patel - Realtor"></div>
+            <div class="about-text">
+                <h3>Biren Patel</h3>
+                <p>As a dedicated and results-driven real estate professional, I specialize in helping clients buy, sell, and lease residential properties with confidence and ease. With a strong understanding of the local market and a commitment to exceptional service, I provide personalized guidance tailored to your unique needs.</p>
+                <p>Whether you're a first-time homebuyer, an investor, or looking to sell your property for top value, I ensure a smooth and stress-free experience from start to finish. My goal is to deliver honest advice, strong negotiation, and outstanding results every time.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="services fade-section" id="services">
+        <div class="section-title"><div class="divider"></div><h2>My Services</h2><p>Comprehensive real estate solutions tailored to your needs</p></div>
+        <div class="services-grid">
+            <div class="service-card"><div class="service-icon">&#127968;</div><h3>Buying</h3><p>Find your perfect home with expert guidance through every step of the buying process. From first viewing to closing day.</p></div>
+            <div class="service-card"><div class="service-icon">&#128176;</div><h3>Selling</h3><p>Maximize your property's value with strategic marketing, professional staging advice, and skilled negotiation.</p></div>
+            <div class="service-card"><div class="service-icon">&#128273;</div><h3>Rentals</h3><p>Whether you're a tenant or landlord, I help you find the ideal rental match with thorough screening and market expertise.</p></div>
+            <div class="service-card"><div class="service-icon">&#127959;</div><h3>Property Management</h3><p>Full-service property management to protect your investment â€” tenant relations, maintenance coordination, and more.</p></div>
+            <div class="service-card"><div class="service-icon">&#128200;</div><h3>Investment Consulting</h3><p>Strategic advice for building your real estate portfolio. Market analysis, ROI projections, and opportunity identification.</p></div>
+            <div class="service-card"><div class="service-icon">&#129309;</div><h3>First-Time Buyers</h3><p>Special guidance for first-time homebuyers navigating the market. Step-by-step support from pre-approval to keys in hand.</p></div>
+        </div>
+    </section>
+
+    <section class="testimonials fade-section" id="testimonials">
+        <div class="section-title"><div class="divider"></div><h2>Client Testimonials</h2><p>What my clients say about working with me</p></div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card"><div class="testimonial-stars">&#11088;&#11088;&#11088;&#11088;&#11088;</div><p class="testimonial-text">"Biren made our first home buying experience incredibly smooth. He was patient, knowledgeable, and always available to answer our questions. We couldn't have asked for a better realtor!"</p><div class="testimonial-author">&#8212; Priya &amp; Raj M.</div></div>
+            <div class="testimonial-card"><div class="testimonial-stars">&#11088;&#11088;&#11088;&#11088;&#11088;</div><p class="testimonial-text">"Exceptional service from start to finish. Biren's market knowledge and negotiation skills helped us sell our property above asking price in just two weeks. Highly recommended!"</p><div class="testimonial-author">&#8212; Michael T.</div></div>
+            <div class="testimonial-card"><div class="testimonial-stars">&#11088;&#11088;&#11088;&#11088;&#11088;</div><p class="testimonial-text">"As an investor, I needed someone who understood the numbers. Biren provided excellent market analysis and helped me find properties with strong ROI. A true professional."</p><div class="testimonial-author">&#8212; Sarah K.</div></div>
+            <div class="testimonial-card"><div class="testimonial-stars">&#11088;&#11088;&#11088;&#11088;&#11088;</div><p class="testimonial-text">"Biren went above and beyond helping us find the perfect rental property. His attention to detail and genuine care for his clients sets him apart from other realtors."</p><div class="testimonial-author">&#8212; David &amp; Lisa W.</div></div>
+            <div class="testimonial-card"><div class="testimonial-stars">&#11088;&#11088;&#11088;&#11088;&#11088;</div><p class="testimonial-text">"Working with Biren was the best decision we made. He made what could have been a stressful process feel effortless. His honest advice and dedication are truly unmatched."</p><div class="testimonial-author">&#8212; Anita P.</div></div>
+            <div class="testimonial-card"><div class="testimonial-stars">&#11088;&#11088;&#11088;&#11088;&#11088;</div><p class="testimonial-text">"I've worked with several realtors over the years, and Biren is hands down the best. Professional, responsive, and always has his clients' best interests at heart."</p><div class="testimonial-author">&#8212; James R.</div></div>
+        </div>
+    </section>
+
+    <section class="listing-detail fade-section" id="listings">
+        <div class="section-title"><div class="divider"></div><h2>Featured Listing</h2></div>
+        <div class="listing-header">
+            <h3>1220 Riverbend Road, Unit 105, London, ON<span class="listing-badge">For Sale</span></h3>
+            <div class="listing-price">$589,900</div>
+            <div class="listing-meta">
+                <span>&#128719; 3 Bedrooms</span>
+                <span>&#128705; 4 Bathrooms</span>
+                <span>&#128207; 2,000+ sqft</span>
+                <span>&#127968; End Unit Townhouse</span>
+                <span>&#9989; Finished Basement</span>
+                <span>&#128203; MLS: 40819102</span>
+            </div>
+        </div>
+        <div class="gallery-container">
+            <div class="gallery-main" id="galleryMain">
+                <img id="mainImage" src="1220 riverbend road/1220 images compressed/1-print-hf_20260413_022501_95aa890a-2aac-45aa-8032-21aa198d981b.jpg" alt="1220 Riverbend Road">
+                <button class="gallery-nav prev" onclick="changeImage(-1)">&#10094;</button>
+                <button class="gallery-nav next" onclick="changeImage(1)">&#10095;</button>
+                <div class="gallery-counter" id="galleryCounter">1 / 50</div>
+            </div>
+            <div class="gallery-thumbs" id="galleryThumbs"></div>
+        </div>
+        <div class="listing-video">
+            <h4>&#127916; Property Video Tour</h4>
+            <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:15px;">
+                <iframe src="https://www.youtube.com/embed/_Wh3PWXBxVQ" 
+                    style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;border-radius:15px;" 
+                    allowfullscreen loading="lazy" title="1220 Riverbend Road Video Tour">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact fade-section" id="contact">
+        <div class="section-title"><div class="divider"></div><h2>Get In Touch</h2><p>Ready to start your real estate journey? Let's connect!</p></div>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h3>Contact Information</h3>
+                <div class="contact-item"><div class="icon">&#128222;</div><div class="text"><strong>Phone</strong><a href="tel:+12269981824" style="color:var(--gray);text-decoration:none;">+1 (226) 998-1824</a></div></div>
+                <div class="contact-item"><div class="icon">&#128231;</div><div class="text"><strong>Email</strong><a href="mailto:biren@payitforwardrealty.ca" style="color:var(--gray);text-decoration:none;">biren@payitforwardrealty.ca</a></div></div>
+                <div class="contact-item"><div class="icon">&#128247;</div><div class="text"><strong>Instagram</strong><a href="https://instagram.com/realistic_realtor1" target="_blank" style="color:var(--gray);text-decoration:none;">@realistic_realtor1</a></div></div>
+                <div class="contact-item"><div class="icon">&#128205;</div><div class="text"><strong>Service Area</strong>London, Brantford, Cambridge &amp; Surrounding Areas</div></div>
+            </div>
+            <div class="contact-form">
+                <form id="contactForm" onsubmit="handleSubmit(event)">
+                    <input type="text" id="formName" placeholder="Your Name" required>
+                    <input type="email" id="formEmail" placeholder="Your Email" required>
+                    <input type="tel" id="formPhone" placeholder="Phone Number">
+                    <textarea id="formMessage" placeholder="Tell me about your real estate needs..."></textarea>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+                <div class="form-success" id="formSuccess">&#9989; Thank you for reaching out! We will be in touch with you shortly.</div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <img src="logo_new.png" alt="Logo" class="footer-logo">
+        <div class="social-links">
+            <a href="tel:+12269981824" title="Call">&#128222;</a>
+            <a href="mailto:biren@payitforwardrealty.ca" title="Email">&#128231;</a>
+            <a href="https://instagram.com/realistic_realtor1" target="_blank" title="Instagram">&#128247;</a>
+            <a href="https://www.google.com/maps/place/Realtor+Biren+Patel" target="_blank" title="Google Maps">&#128205;</a>
+        </div>
+        <p>&#169; 2026 Realtor Biren Patel. All rights reserved. | Pay It Forward Realty</p>
+    </footer>
+
+    <script>
+    // Scroll fade animation
+    const fadeObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-section').forEach(s => fadeObserver.observe(s));
+
+    // Contact form - sends email
+    function handleSubmit(e) {
+        e.preventDefault();
+        const name = document.getElementById('formName').value;
+        const email = document.getElementById('formEmail').value;
+        const phone = document.getElementById('formPhone').value;
+        const message = document.getElementById('formMessage').value;
+
+        // Try EmailJS first (if configured), otherwise use mailto
+        if (typeof emailjs !== 'undefined' && emailjs.send) {
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+                from_name: name, from_email: email, phone: phone, message: message,
+                to_email: 'biren@payitforwardrealty.ca'
+            }).catch(() => {
+                window.location.href = `mailto:biren@payitforwardrealty.ca?subject=${encodeURIComponent('New Lead: ' + name)}&body=${encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\nPhone: ' + phone + '\nMessage: ' + message)}`;
+            });
+        } else {
+            window.location.href = `mailto:biren@payitforwardrealty.ca?subject=${encodeURIComponent('New Lead: ' + name)}&body=${encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\nPhone: ' + phone + '\nMessage: ' + message)}`;
+        }
+
+        document.getElementById('contactForm').style.display = 'none';
+        document.getElementById('formSuccess').classList.add('show');
+        setTimeout(() => {
+            document.getElementById('contactForm').style.display = 'block';
+            document.getElementById('contactForm').reset();
+            document.getElementById('formSuccess').classList.remove('show');
+        }, 5000);
+    }
+
+    // Image gallery
+    const images = [
+        "1220 riverbend road/1220 images compressed/1-print-hf_20260413_022501_95aa890a-2aac-45aa-8032-21aa198d981b.jpg",
+        "1220 riverbend road/1220 images compressed/2-print-hf_20260413_021821_f0efb7ec-e697-44d9-a170-f82c903668c1.jpg",
+        "1220 riverbend road/1220 images compressed/3-print-DSC07296.jpg",
+        "1220 riverbend road/1220 images compressed/4-print-hf_20260413_022533_c6e27c16-754a-478b-8a0c-2ab5cacbdf81.jpg",
+        "1220 riverbend road/1220 images compressed/5-print-hf_20260413_021849_3b7b1dc7-3174-47bd-bcbc-7438de8c960c.jpg",
+        "1220 riverbend road/1220 images compressed/10-print-hf_20260413_022515_388723d3-04af-4007-8106-5f9a67031abc.jpg",
+        "1220 riverbend road/1220 images compressed/11-print-hf_20260413_021911_0cb2d18f-8e29-485a-87db-addde0b2fbeb.jpg",
+        "1220 riverbend road/1220 images compressed/12-print-DSC07305.jpg",
+        "1220 riverbend road/1220 images compressed/13-print-hf_20260413_021931_239f10fa-50b9-4d2b-b0ed-73731c6e46fb.jpg",
+        "1220 riverbend road/1220 images compressed/14-print-DSC07308.jpg",
+        "1220 riverbend road/1220 images compressed/15-print-DSC07215.jpg",
+        "1220 riverbend road/1220 images compressed/16-print-DSC07218.jpg",
+        "1220 riverbend road/1220 images compressed/17-print-DSC07221.jpg",
+        "1220 riverbend road/1220 images compressed/18-print-DSC07224.jpg",
+        "1220 riverbend road/1220 images compressed/19-print-DSC07227.jpg",
+        "1220 riverbend road/1220 images compressed/20-print-DSC07230.jpg",
+        "1220 riverbend road/1220 images compressed/21-print-DSC07233.jpg",
+        "1220 riverbend road/1220 images compressed/22-print-DSC07236.jpg",
+        "1220 riverbend road/1220 images compressed/23-print-DSC07239.jpg",
+        "1220 riverbend road/1220 images compressed/24-print-DSC07242.jpg",
+        "1220 riverbend road/1220 images compressed/25-print-DSC07245.jpg",
+        "1220 riverbend road/1220 images compressed/26-print-DSC07248.jpg",
+        "1220 riverbend road/1220 images compressed/27-print-DSC07251.jpg",
+        "1220 riverbend road/1220 images compressed/28-print-DSC07254.jpg",
+        "1220 riverbend road/1220 images compressed/29-print-DSC07257.jpg",
+        "1220 riverbend road/1220 images compressed/30-print-DSC07260.jpg",
+        "1220 riverbend road/1220 images compressed/31-print-DSC07263.jpg",
+        "1220 riverbend road/1220 images compressed/32-print-DSC07266.jpg",
+        "1220 riverbend road/1220 images compressed/33-print-DSC07272.jpg",
+        "1220 riverbend road/1220 images compressed/34-print-DSC07275.jpg",
+        "1220 riverbend road/1220 images compressed/35-print-DSC07278.jpg",
+        "1220 riverbend road/1220 images compressed/36-print-DSC07281.jpg",
+        "1220 riverbend road/1220 images compressed/37-print-DSC07284.jpg",
+        "1220 riverbend road/1220 images compressed/38-print-DSC07287.jpg",
+        "1220 riverbend road/1220 images compressed/39-print-DSC07290.jpg",
+        "1220 riverbend road/1220 images compressed/40-print-DSC07293.jpg",
+        "1220 riverbend road/1220 images compressed/41-print-hf_20260413_021956_e70d0637-3687-4a9d-8f94-e1d23072f48a.jpg",
+        "1220 riverbend road/1220 images compressed/42-print-DSC07311.jpg",
+        "1220 riverbend road/1220 images compressed/43-print-hf_20260413_022021_df69f783-707c-468f-8838-fbcfb22d2ae1.jpg",
+        "1220 riverbend road/1220 images compressed/44-print-DSC07314.jpg",
+        "1220 riverbend road/1220 images compressed/45-print-hf_20260413_022148_ded5c69b-2015-4e37-b43b-c4a942b9bb34.jpg",
+        "1220 riverbend road/1220 images compressed/46-print-DJI_20260412143246_0998_D.jpg",
+        "1220 riverbend road/1220 images compressed/47-print-hf_20260413_022308_2df077c3-92fc-4875-b134-a2b5c13c8be1.jpg",
+        "1220 riverbend road/1220 images compressed/48-print-DJI_20260412143101_0983_D.jpg",
+        "1220 riverbend road/1220 images compressed/49-print-hf_20260413_022253_8985fffc-41a8-4737-a3e5-3cd0ce8bda5c.jpg",
+        "1220 riverbend road/1220 images compressed/50-print-DJI_20260412143146_0989_D.jpg",
+        "1220 riverbend road/1220 images compressed/51-print-hf_20260413_022227_c1e01349-b953-4290-b12f-a14b148798d8.jpg",
+        "1220 riverbend road/1220 images compressed/52-print-DJI_20260412143206_0992_D.jpg",
+        "1220 riverbend road/1220 images compressed/53-print-hf_20260413_022208_76cf808f-2693-4e4f-baf4-2ac3d734750f.jpg",
+        "1220 riverbend road/1220 images compressed/54-print-DJI_20260412143227_0995_D.jpg"
+    ];
+    let currentIndex = 0;
+    const thumbsContainer = document.getElementById('galleryThumbs');
+    images.forEach((img, i) => {
+        const thumb = document.createElement('img');
+        thumb.src = img; thumb.alt = 'Photo ' + (i+1);
+        thumb.onclick = () => goToImage(i);
+        if (i === 0) thumb.classList.add('active');
+        thumbsContainer.appendChild(thumb);
+    });
+    function changeImage(dir) { currentIndex = (currentIndex + dir + images.length) % images.length; updateGallery(); }
+    function goToImage(index) { currentIndex = index; updateGallery(); }
+    function updateGallery() {
+        document.getElementById('mainImage').src = images[currentIndex];
+        document.getElementById('galleryCounter').textContent = (currentIndex + 1) + ' / ' + images.length;
+        document.querySelectorAll('.gallery-thumbs img').forEach((t, i) => t.classList.toggle('active', i === currentIndex));
+        thumbsContainer.children[currentIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+    document.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') changeImage(-1); if (e.key === 'ArrowRight') changeImage(1); });
+
+    // Navbar & menu
+    window.addEventListener('scroll', () => document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50));
+    function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
+    document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', () => document.getElementById('navLinks').classList.remove('active')));
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) { e.preventDefault(); const t = document.querySelector(this.getAttribute('href')); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+    });
+    </script>
+</body>
+</html>
+
+
